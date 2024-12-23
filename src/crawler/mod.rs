@@ -126,7 +126,7 @@ pub fn create_ics(schedules: &[Schedule], filename: &str, univ: &str, year: i32)
         event.push(DtStart::new(
             start_date.format("%Y%m%dT000000Z").to_string(),
         ));
-        event.push(DtEnd::new(end_date.format("%Y%m%dT235959Z").to_string()));
+        event.push(DtEnd::new(end_date.format("%Y%m%dT145959Z").to_string()));
         event.push(Summary::new(&schedule.title));
         if !schedule.org.is_empty() {
             event.push(Description::new(escape_text(format!(
