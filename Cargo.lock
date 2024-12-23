@@ -366,6 +366,24 @@ dependencies = [
 ]
 
 [[package]]
+name = "calendar-dongguk"
+version = "0.1.1"
+dependencies = [
+ "actix-web",
+ "anyhow",
+ "async-trait",
+ "chrono",
+ "dotenvy",
+ "ics",
+ "reqwest",
+ "scraper",
+ "serde",
+ "serde_json",
+ "tokio",
+ "uuid",
+]
+
+[[package]]
 name = "cc"
 version = "1.2.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1699,24 +1717,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1f29ebaa345f945cec9fbbc532eb307f0fdad8161f281b6369539c8d84876b3d"
 dependencies = [
  "windows-sys 0.59.0",
-]
-
-[[package]]
-name = "schedule-dongguk"
-version = "0.1.0"
-dependencies = [
- "actix-web",
- "anyhow",
- "async-trait",
- "chrono",
- "dotenvy",
- "ics",
- "reqwest",
- "scraper",
- "serde",
- "serde_json",
- "tokio",
- "uuid",
 ]
 
 [[package]]

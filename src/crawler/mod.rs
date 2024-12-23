@@ -4,8 +4,8 @@ use anyhow::Result;
 use async_trait::async_trait;
 use chrono::NaiveDate;
 use dongguk::DonggukCrawler;
-use ics::properties::{Description, DtEnd, DtStart, Status, Summary};
-use ics::{escape_text, Event, ICalendar};
+use ics::properties::{Description, DtEnd, DtStart, LastModified, Status, Summary, TzName};
+use ics::{escape_text, Event, ICalendar, Standard, TimeZone};
 use serde::{Deserialize, Serialize};
 use std::fs::File;
 use std::io::Write;
@@ -102,6 +102,12 @@ pub fn save_to_json(schedules: &[Schedule], filename: &str) -> std::io::Result<(
 
 pub fn create_ics(schedules: &[Schedule], filename: &str, univ: &str, year: i32) -> String {
     let mut calendar = ICalendar::new("2.0", format! {"-//{} {} 학사일정//KR", univ, year});
+    let mut standard = Standard::new("19700101T000000", "+0900", "+0900");
+    standard.push(TzName::new("KST"));
+
+    let mut timezone = TimeZone::standard("Asia/Seoul", standard);
+    timezone.push(LastModified::new("20230615T050000Z"));
+    calendar.add_timezone(timezone);
 
     for schedule in schedules {
         let mut event = Event::new(
