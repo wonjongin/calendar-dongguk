@@ -2,6 +2,7 @@ name: Deploy
 
 env:
   CARGO_TERM_COLOR: always
+  BINARY_NAME: calendar-dongguk
 
 on:
   push:
@@ -34,7 +35,7 @@ jobs:
         key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
     - name: Build Server Binary
-      run: cargo build --release --verbose
+      run: cargo build --release
 
     - name: Deploy to Server
       uses: easingthemes/ssh-deploy@v5.1.0
