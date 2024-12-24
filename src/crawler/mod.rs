@@ -4,6 +4,7 @@ use anyhow::Result;
 use async_trait::async_trait;
 use chrono::NaiveDate;
 use dongguk::DonggukCrawler;
+use ics::parameters::Value;
 use ics::properties::{Description, DtEnd, DtStart, LastModified, Status, Summary, TzName};
 use ics::{escape_text, Event, ICalendar, Standard, TimeZone};
 use serde::{Deserialize, Serialize};
@@ -122,11 +123,13 @@ pub fn create_ics(schedules: &[Schedule], filename: &str, univ: &str, year: i32)
         } else {
             start_date
         };
+        let mut dtstart = DtStart::new(start_date.format("%Y%m%d").to_string());
+        dtstart.add(Value::DATE);
+        let mut dtend = DtEnd::new(end_date.format("%Y%m%d").to_string());
+        dtend.add(Value::DATE);
 
-        event.push(DtStart::new(
-            start_date.format("%Y%m%dT000000Z").to_string(),
-        ));
-        event.push(DtEnd::new(end_date.format("%Y%m%dT145959Z").to_string()));
+        event.push(dtstart);
+        event.push(dtend);
         event.push(Summary::new(&schedule.title));
         if !schedule.org.is_empty() {
             event.push(Description::new(escape_text(format!(
