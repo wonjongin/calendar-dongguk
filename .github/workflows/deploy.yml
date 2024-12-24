@@ -1,0 +1,57 @@
+name: Deploy
+
+env:
+  CARGO_TERM_COLOR: always
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4.2.2
+
+    - name: Setup Rust
+      uses: actions-rust-lang/setup-rust-toolchain@v1.10.1
+      with:
+        target: 'x86_64-unknown-linux-gnu'
+        cache-workspaces: 'target'
+        rustflags: ''
+
+    
+    - name: Cache
+      uses: actions/cache@v4.2.0
+      with:
+        path: |
+          ~/.cargo/registry
+          ~/.cargo/git
+          target
+        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+
+    - name: Build Server Binary
+      run: cargo build --release --verbose
+
+    - name: Deploy to Server
+      uses: easingthemes/ssh-deploy@v5.1.0
+      with:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
+        REMOTE_HOST: ${{ secrets.SSH_HOST }}
+        REMOTE_USER: ${{ secrets.SSH_USER }}
+        REMOTE_PORT: ${{ secrets.SSH_PORT }}
+        SOURCE: "target/release/calendar-dongguk"
+        TARGET: "/opt/calendar-dongguk/calendar-dongguk"
+        SCRIPT_BEFORE: |
+          pm2 stop calendar-dongguk
+          rm -f /opt/calendar-dongguk/calendar-dongguk
+          rm -f /opt/calendar-dongguk/public/*
+        SCRIPT_AFTER: |
+          chown -R ${{ secrets.SSH_USER }}:${{ secrets.SSH_USER }} /opt/calendar-dongguk
+          chmod -R 755 /opt/calendar-dongguk
+          pm2 restart calendar-dongguk
+    
+          
