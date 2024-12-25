@@ -1,15 +1,17 @@
 <h1 align="center">동국대학교 학사일정 서비스 🎓</h1>
 
-<p align="center">동국대학교의 학사일정을 편리하게 확인하고 구독할 수 있는 서비스입니다. 웹 캘린더와 캘린더 구독 기능을 통해 학사일정을 효율적으로 관리하세요.<p align="center">
+<p align="center">동국대학교의 학사일정을 편리하게 확인하고 구독할 수 있는 서비스입니다. 웹 캘린더와 캘린더 구독 기능을 통해 학사일정을 효율적으로 관리하세요.</p>
 
+<div align="center">
+
+![github star 상태](https://img.shields.io/github/stars/wonjongin/calendar-dongguk)
 ![github action 상태](https://github.com/wonjongin/calendar-dongguk/actions/workflows/deploy.yml/badge.svg)
-![github star 상태](https://img.shields.io/github/stars/wonjongin/calendar-dongguk?style=flat-square)
-![github license 상태](https://img.shields.io/github/license/wonjongin/calendar-dongguk?style=flat-square)
-![github commit 상태](https://img.shields.io/github/commit-activity/m/wonjongin/calendar-dongguk?style=flat-square)
-![github last commit 상태](https://img.shields.io/github/last-commit/wonjongin/calendar-dongguk?style=flat-square)
-![github issues 상태](https://img.shields.io/github/issues/wonjongin/calendar-dongguk?style=flat-square)
-![github pull requests 상태](https://img.shields.io/github/issues-pr/wonjongin/calendar-dongguk?style=flat-square)
-![github code size 상태](https://img.shields.io/github/languages/code-size/wonjongin/calendar-dongguk?style=flat-square)
+![github license 상태](https://img.shields.io/github/license/wonjongin/calendar-dongguk)
+![github commit 상태](https://img.shields.io/github/commit-activity/m/wonjongin/calendar-dongguk)
+![github last commit 상태](https://img.shields.io/github/last-commit/wonjongin/calendar-dongguk)
+![github code size 상태](https://img.shields.io/github/languages/code-size/wonjongin/calendar-dongguk)
+
+</div>
 
 ---
 
