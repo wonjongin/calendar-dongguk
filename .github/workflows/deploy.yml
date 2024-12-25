@@ -23,7 +23,7 @@ on:
       - "front/index.html"
       - "Cargo.toml"
       - "Cargo.lock"
-       - ".github/workflows/deploy.yml"
+      - ".github/workflows/deploy.yml"
     branches: ["main"]
 
 jobs:
