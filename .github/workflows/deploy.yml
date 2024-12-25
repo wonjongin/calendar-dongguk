@@ -5,25 +5,8 @@ env:
   BINARY_NAME: calendar-dongguk
 
 on:
-  push:
-    paths:
-      - "src/**"
-      - "front/src/**"
-      - "front/package.json"
-      - "front/index.html"
-      - "Cargo.toml"
-      - "Cargo.lock"
-      - ".github/workflows/deploy.yml"
-    branches: ["main"]
-  pull_request:
-    paths:
-      - "src/**"
-      - "front/src/**"
-      - "front/package.json"
-      - "front/index.html"
-      - "Cargo.toml"
-      - "Cargo.lock"
-      - ".github/workflows/deploy.yml"
+  release:
+    types: [published]
     branches: ["main"]
 
 jobs:
