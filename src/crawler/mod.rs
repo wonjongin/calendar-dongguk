@@ -50,12 +50,14 @@ pub async fn process_univs() -> Result<()> {
 
         for year_config in univ.years {
             let filename = format!("public/{}_{}.ics", univ.prefix, year_config.year);
+            let filename_json = format!("public/{}_{}.json", univ.prefix, year_config.year);
             if Path::new(&filename).exists() {
                 println!("{} 파일이 존재합니다", filename);
             } else {
                 match crawler.crawl(&year_config.url).await {
                     Ok(schedules) => {
                         create_ics(&schedules, &filename, &univ.name, year_config.year);
+                        save_to_json(&schedules, &filename_json)?;
                         // std::fs::write(filename, calendar)?;
                         println!(
                             "Successfully created calendar for {} {}",
