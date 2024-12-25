@@ -1,6 +1,6 @@
-<h1 align="center">동국대학교 학사일정 서비스 🎓</h1>
+<h1 align="center">대학교 학사일정 서비스 🎓</h1>
 
-<p align="center">동국대학교의 학사일정을 편리하게 확인하고 구독할 수 있는 서비스입니다. 웹 캘린더와 캘린더 구독 기능을 통해 학사일정을 효율적으로 관리하세요.</p>
+<p align="center">대학교의 학사일정을 편리하게 확인하고 구독할 수 있는 서비스입니다. 웹 캘린더와 캘린더 구독 기능을 통해 학사일정을 효율적으로 관리하세요.</p>
 
 <div align="center">
 
@@ -58,7 +58,7 @@
 
 ## 기여하기 🤝
 
-버그 제보나 기능 제안은 [Issues](https://github.com/wonjongin/calendar-dongguk/issues) 페이지를 이용해 주세요.
+버그 제보나 기능, 학교 제안은 [Issues](https://github.com/wonjongin/calendar-dongguk/issues) 페이지를 이용해 주세요.
 
 ## 라이선스 📄
 
