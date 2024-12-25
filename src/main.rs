@@ -1,7 +1,10 @@
 mod crawler;
 
-use actix_web::web;
+use actix_cors::Cors;
+use actix_files as fs;
+use actix_web::middleware::Logger;
 use actix_web::{get, App, HttpResponse, HttpServer, Responder};
+use actix_web::{http, web};
 use crawler::process_univs;
 use serde::Serialize;
 use std::env;
@@ -28,6 +31,11 @@ async fn get_calendar(path: web::Path<String>) -> impl Responder {
             .body(content),
         Err(_) => HttpResponse::NotFound().body("Calendar file not found"),
     }
+}
+
+#[get("/test")]
+async fn test() -> impl Responder {
+    HttpResponse::Ok().body("Test")
 }
 
 #[get("/")]
@@ -105,17 +113,41 @@ async fn index() -> impl Responder {
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     dotenvy::dotenv().ok();
+    env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
+
     if let Err(e) = process_univs().await {
         eprintln!("Error processing schools: {}", e);
     }
+
+    #[cfg(debug_assertions)]
+    const FRONT_PATH: &str = "./front/dist";
+
+    #[cfg(not(debug_assertions))]
+    const FRONT_PATH: &str = "./static";
+
     let port: u16 = env::var("PORT")
         .unwrap_or("8080".to_string())
         .parse()
         .unwrap();
     println!("Server running at http://localhost:{}", port);
 
-    HttpServer::new(|| App::new().service(index).service(get_calendar))
-        .bind(("127.0.0.1", port))?
-        .run()
-        .await
+    HttpServer::new(|| {
+        let cors = Cors::default()
+            .allowed_origin("http://localhost:5173")
+            .allowed_methods(vec!["GET"])
+            // .allowed_headers(vec![http::header::AUTHORIZATION, http::header::ACCEPT])
+            .allowed_header(http::header::CONTENT_TYPE)
+            .max_age(3600);
+
+        App::new()
+            // .service(index)
+            .service(test)
+            .service(get_calendar)
+            .service(fs::Files::new("/", FRONT_PATH).index_file("index.html"))
+            .wrap(Logger::default())
+            .wrap(cors)
+    })
+    .bind(("127.0.0.1", port))?
+    .run()
+    .await
 }

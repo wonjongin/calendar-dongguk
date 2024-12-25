@@ -8,12 +8,18 @@ on:
   push:
     paths:
       - "src/**"
+      - "front/src/**"
+      - "front/package.json"
+      - "front/index.html"
       - "Cargo.toml"
       - "Cargo.lock"
     branches: ["main"]
   pull_request:
     paths:
       - "src/**"
+      - "front/src/**"
+      - "front/package.json"
+      - "front/index.html"
       - "Cargo.toml"
       - "Cargo.lock"
     branches: ["main"]
@@ -25,6 +31,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4.2.2
 
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "pnpm"
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
       - name: Setup Rust
         uses: actions-rust-lang/setup-rust-toolchain@v1.10.1
         with:
@@ -32,7 +49,20 @@ jobs:
           cache-workspaces: "target"
           rustflags: ""
 
-      - name: Cache
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Cache pnpm
+        uses: actions/cache@v4.2.0
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Cache cargo
         uses: actions/cache@v4.2.0
         with:
           path: |
@@ -44,6 +74,20 @@ jobs:
       - name: Build Server Binary
         run: cargo build --release
 
+      - name: Install dependencies and Build for Frontend
+        working-directory: ./front
+        run: |
+          pnpm install
+          pnpm run build
+
+      - name: Package Binary and Frontend
+        run: |
+          mkdir -p release/static
+          cp target/release/$BINARY_NAME release/$BINARY_NAME
+          cp -r front/dist/* release/static
+          cp univ.json release/univ.json
+          tar -czf release.tar.gz -C release .
+
       - name: Deploy to Server
         uses: easingthemes/ssh-deploy@v5.1.0
         with:
@@ -51,13 +95,18 @@ jobs:
           REMOTE_HOST: ${{ secrets.SSH_HOST }}
           REMOTE_USER: ${{ secrets.SSH_USER }}
           REMOTE_PORT: ${{ secrets.SSH_PORT }}
-          SOURCE: "target/release/calendar-dongguk"
-          TARGET: "/opt/calendar-dongguk/calendar-dongguk"
+          SOURCE: "release.tar.gz"
+          TARGET: "/opt/calendar-dongguk/release.tar.gz"
           SCRIPT_BEFORE: |
             pm2 stop calendar-dongguk
+            mkdir -p /opt/calendar-dongguk/public
+            mkdir -p /opt/calendar-dongguk/static
             rm -f /opt/calendar-dongguk/calendar-dongguk
             rm -f /opt/calendar-dongguk/public/*
+            rm -f /opt/calendar-dongguk/static/*
           SCRIPT_AFTER: |
+            cd /opt/calendar-dongguk && tar -xzf release.tar.gz
             chown -R ${{ secrets.SSH_USER }}:${{ secrets.SSH_USER }} /opt/calendar-dongguk
             chmod -R 755 /opt/calendar-dongguk
+            rm -rf /opt/calendar-dongguk/release.tar.gz
             pm2 restart calendar-dongguk
