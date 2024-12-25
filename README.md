@@ -37,11 +37,18 @@
 
 ### 캘린더 구독하기
 
-1. 구독 URL 복사: [https://dgu-calendar.duckdns.org/calendar/DONGGUK_2024.ics](https://dgu-calendar.duckdns.org/calendar/DONGGUK_2024.ics)
+1. 구독 URL 복사하기 (아래 [학교별 캘린더 구독 링크](#학교별-캘린더-구독-링크-)에서 확인)
 2. 사용 중인 캘린더 앱에서 구독 추가
    - [Google Calendar 구독 방법](https://support.google.com/calendar/answer/37100?hl=ko)
    - [Apple Calendar 구독 방법](https://support.apple.com/ko-kr/102301)
    - **아이폰**의 경우 해당 URL을 누르면 자동으로 구독 추가화면으로 넘어갑니다.
+
+## 학교별 캘린더 구독 링크 📅
+
+| 학교명 | 학년도 | 캘린더 구독 링크 |
+| --- | --- | --- |
+| 동국대학교 | 2024 | [https://dgu-calendar.duckdns.org/calendar/DONGGUK_2024.ics](https://dgu-calendar.duckdns.org/calendar/DONGGUK_2024.ics) |
+| 동국대학교 | 2025 | [https://dgu-calendar.duckdns.org/calendar/DONGGUK_2025.ics](https://dgu-calendar.duckdns.org/calendar/DONGGUK_2025.ics) |
 
 ## 지원하는 학교 🏫
 
