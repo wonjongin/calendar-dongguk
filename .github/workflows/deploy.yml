@@ -90,7 +90,6 @@ jobs:
             mkdir -p /opt/calendar-dongguk/public
             mkdir -p /opt/calendar-dongguk/static
             rm -f /opt/calendar-dongguk/calendar-dongguk
-            rm -rf /opt/calendar-dongguk/public/*
             rm -rf /opt/calendar-dongguk/static/*
           SCRIPT_AFTER: |
             cd /opt/calendar-dongguk && tar -xzf release.tar.gz
