@@ -4,11 +4,14 @@ version = "0.1.1"
 edition = "2021"
 
 [dependencies]
+actix-cors = "0.7.0"
+actix-files = "0.6.6"
 actix-web = "4.9.0"
 anyhow = "1.0.95"
 async-trait = "0.1.83"
 chrono = "0.4.39"
 dotenvy = "0.15.7"
+env_logger = "0.11.6"
 ics = "0.5.8"
 reqwest = { version = "0.12.9", features = ["json"] }
 scraper = "0.22.0"
