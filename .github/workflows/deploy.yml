@@ -71,6 +71,7 @@ jobs:
       - name: Package Binary and Frontend
         run: |
           mkdir -p release/static
+          mkdir -p release/data
           cp target/release/$BINARY_NAME release/$BINARY_NAME
           cp -r front/dist/* release/static
           cp univ.json release/univ.json
@@ -89,6 +90,7 @@ jobs:
             pm2 stop calendar-dongguk
             mkdir -p /opt/calendar-dongguk/public
             mkdir -p /opt/calendar-dongguk/static
+            mkdir -p /opt/calendar-dongguk/data
             rm -f /opt/calendar-dongguk/calendar-dongguk
             rm -rf /opt/calendar-dongguk/static/*
           SCRIPT_AFTER: |

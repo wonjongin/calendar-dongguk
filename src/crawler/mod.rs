@@ -1,4 +1,6 @@
+pub mod classify;
 mod dongguk;
+pub mod univ_config;
 
 use anyhow::Result;
 use async_trait::async_trait;
@@ -7,26 +9,12 @@ use dongguk::DonggukCrawler;
 use ics::parameters::Value;
 use ics::properties::{Description, DtEnd, DtStart, LastModified, Status, Summary, TzName};
 use ics::{escape_text, Event, ICalendar, Standard, TimeZone};
-use serde::{Deserialize, Serialize};
 use std::fs::File;
 use std::io::Write;
 use std::path::Path;
+use univ_config::UnivConfig;
 
-use crate::Schedule;
-
-#[derive(Deserialize, Serialize)]
-struct YearConfig {
-    year: i32,
-    url: String,
-}
-
-#[derive(Deserialize, Serialize)]
-struct UnivConfig {
-    name: String,
-    prefix: String,
-    years: Vec<YearConfig>,
-    crawler_type: String,
-}
+use crate::schedule::{Schedule, ScheduleCategoryList};
 
 // 크롤링 함수들을 trait로 정의
 #[async_trait]
@@ -50,7 +38,7 @@ pub async fn process_univs() -> Result<()> {
 
         for year_config in univ.years {
             let filename = format!("public/{}_{}.ics", univ.prefix, year_config.year);
-            let filename_json = format!("public/{}_{}.json", univ.prefix, year_config.year);
+            let filename_json = format!("data/{}_{}.json", univ.prefix, year_config.year);
             if Path::new(&filename).exists() {
                 println!("{} 파일이 존재합니다", filename);
             } else {
@@ -103,6 +91,37 @@ pub fn save_to_json(schedules: &[Schedule], filename: &str) -> std::io::Result<(
     Ok(())
 }
 
+pub fn json_file_to_ics(
+    json_file: &str,
+    ics_file: &str,
+    univ: &str,
+    year: i32,
+    hash: u8,
+) -> String {
+    let json_str = match std::fs::read_to_string(json_file) {
+        Ok(content) => content,
+        Err(e) => {
+            eprintln!("Failed to read file: {}", e);
+            return "".to_string();
+        }
+    };
+    let schedules: Vec<Schedule> = match serde_json::from_str(&json_str) {
+        Ok(data) => data,
+        Err(e) => {
+            eprintln!("Failed to parse JSON: {}", e);
+            return "".to_string();
+        }
+    };
+    let schedule_category_list = ScheduleCategoryList::from_hash(hash);
+
+    let filtered_schedules: Vec<Schedule> = schedules
+        .into_iter()
+        .filter(|schedule| schedule_category_list.contains(&schedule.category))
+        .collect();
+
+    create_ics(&filtered_schedules, &ics_file, univ, year)
+}
+
 pub fn create_ics(schedules: &[Schedule], filename: &str, univ: &str, year: i32) -> String {
     let mut calendar = ICalendar::new("2.0", format! {"-//{} {} 학사일정//KR", univ, year});
     let mut standard = Standard::new("19700101T000000", "+0900", "+0900");
@@ -135,8 +154,8 @@ pub fn create_ics(schedules: &[Schedule], filename: &str, univ: &str, year: i32)
         event.push(Summary::new(&schedule.title));
         if !schedule.org.is_empty() {
             event.push(Description::new(escape_text(format!(
-                "주관부서: {}",
-                schedule.org
+                "{} 관련\n주관부서: {}",
+                schedule.category, schedule.org
             ))));
         }
         event.push(Status::confirmed());
