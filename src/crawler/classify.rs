@@ -7,12 +7,14 @@ use crate::schedule::Schedule;
 
 fn categorize_schedules(schedules: &mut Vec<Schedule>) {
     let keywords = HashMap::from([
+        ("대학원".to_string(), vec!["대학원", "석사", "박사"]),
         (
             "수업".to_string(),
             vec![
                 "수강신청",
                 "수강 신청",
-                "시험",
+                "중간시험",
+                "기말시험",
                 "계절학기",
                 "개강",
                 "종강",
@@ -36,10 +38,6 @@ fn categorize_schedules(schedules: &mut Vec<Schedule>) {
                 "등록",
                 "학점포기",
             ],
-        ),
-        (
-            "대학원".to_string(),
-            vec!["대학원", "논문", "석사", "학위", "박사"],
         ),
         ("장학".to_string(), vec!["장학"]),
         (

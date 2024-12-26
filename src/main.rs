@@ -4,12 +4,13 @@ mod schedule;
 
 use actix_cors::Cors;
 use actix_files as fs;
-use actix_web::http;
 use actix_web::middleware::Logger;
+use actix_web::{http, web};
 use actix_web::{App, HttpServer};
 use crawler::classify::classify;
 use crawler::process_univs;
 use router::calendar::{get_calendar, get_calendar_by_short};
+use router::get_univ_config;
 use std::env;
 
 #[actix_web::main]
@@ -53,7 +54,14 @@ async fn main() -> std::io::Result<()> {
             // .service(index)
             .service(get_calendar)
             .service(get_calendar_by_short)
-            .service(fs::Files::new("/", FRONT_PATH).index_file("index.html"))
+            .service(get_univ_config)
+            .service(
+                fs::Files::new("/", FRONT_PATH)
+                    .index_file("index.html")
+                    .default_handler(web::get().to(|| async {
+                        fs::NamedFile::open_async(format!("{}/index.html", FRONT_PATH)).await
+                    })),
+            )
             .wrap(Logger::default())
             .wrap(cors)
     })
