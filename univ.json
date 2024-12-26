@@ -2,13 +2,16 @@
   {
     "name": "동국대학교",
     "prefix": "DONGGUK",
+    "univ_code": "d",
     "years": [
       {
         "year": 2025,
+        "year_code": "c",
         "url": "https://www.dongguk.edu/schedule/detail?schedule_info_seq=22&schedule_start_date=2025"
       },
       {
         "year": 2024,
+        "year_code": "b",
         "url": "https://www.dongguk.edu/schedule/detail?schedule_info_seq=22&schedule_start_date=2024"
       }
     ],

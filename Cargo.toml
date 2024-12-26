@@ -13,6 +13,7 @@ chrono = "0.4.39"
 dotenvy = "0.15.7"
 env_logger = "0.11.6"
 ics = "0.5.8"
+lazy_static = "1.5.0"
 reqwest = { version = "0.12.9", features = ["json"] }
 scraper = "0.22.0"
 serde = { version = "1.0.216", features = ["derive"] }

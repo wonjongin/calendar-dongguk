@@ -1,8 +1,9 @@
 use scraper::{Html, Selector};
 
-use crate::Schedule;
 use anyhow::Result;
 use async_trait::async_trait;
+
+use crate::schedule::Schedule;
 
 use super::{fetch_html, parse_date, ScheduleCrawler};
 
@@ -56,7 +57,12 @@ fn parse_schedule(html: &str) -> Vec<Schedule> {
                         .to_string();
                 }
 
-                schedules.push(Schedule { at, title, org });
+                schedules.push(Schedule {
+                    at,
+                    title,
+                    org,
+                    category: "".to_string(),
+                });
             }
         }
     }
