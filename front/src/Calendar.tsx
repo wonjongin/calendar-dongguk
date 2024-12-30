@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Calendar, dateFnsLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import ICAL from "ical.js";
 import axios from "axios";
 
 import { format } from "date-fns/format";
@@ -9,6 +8,7 @@ import { parse } from "date-fns/parse";
 import { startOfWeek } from "date-fns/startOfWeek";
 import { getDay } from "date-fns/getDay";
 import { ko } from "date-fns/locale/ko";
+import { categoryList } from "./Subscribe";
 
 const locales = {
   ko: ko,
@@ -19,8 +19,16 @@ interface Event {
   start: Date;
   end: Date;
   description: string;
-  location: string;
+  location: string | undefined;
+  category: string;
   backgroundColor: string;
+}
+
+interface JsonEvent {
+  at: string[];
+  title: string;
+  org: string;
+  category: string;
 }
 
 const localizer = dateFnsLocalizer({
@@ -54,6 +62,7 @@ const sampleEvents = [
     description: "여행",
     location: "장소",
     backgroundColor: "#D85C06",
+    category: "휴가",
   },
 ];
 const generatePastelColor = () => {
@@ -61,46 +70,72 @@ const generatePastelColor = () => {
   return `hsl(${hue}, 70%, 80%)`;
 };
 
-export default function ICalendarComponent() {
-  const [events, setEvents] = useState(sampleEvents);
+export default function CalendarComponent() {
+  const [events, setEvents] = useState<Event[]>(sampleEvents);
+  const [filteredEvents, setFilteredEvents] = useState<Event[]>(sampleEvents);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([
+    "수업",
+  ]);
+
+  const handleCategoryClick = (category: string) => {
+    console.log(selectedCategories);
+    console.log(filteredEvents);
+    setSelectedCategories((prev) => {
+      if (prev.includes(category)) {
+        return prev.filter((x) => x !== category);
+      } else {
+        return [...prev, category];
+      }
+    });
+  };
 
   useEffect(() => {
-    const fetchICalFile = async () => {
+    console.log("Sample Events:", events);
+    console.log("Sample Event Category:", events[0]?.category);
+    setFilteredEvents(
+      events.filter((x) => selectedCategories.includes(x.category)),
+    );
+  }, [selectedCategories, events]);
+
+  useEffect(() => {
+    const fetchJsonFile = async () => {
       setLoading(true);
       try {
         let url = "";
         if (import.meta.env.DEV) {
           console.log("개발 환경입니다");
-          url = "http://localhost:3000/calendar/DONGGUK_2024.ics";
+          url = "http://localhost:3000/j/DONGGUK/2024";
         } else if (import.meta.env.PROD) {
-          url = "/calendar/DONGGUK_2024.ics";
+          url = "/j/DONGGUK/2024";
         }
 
-        const response = await axios.get(url, {
-          responseType: "text",
-        });
+        const response = await axios.get(url);
+        const jsonData: JsonEvent[] = response.data;
+        // console.log("Is Array?", Array.isArray(response.data));
+        // const arrayData: JsonEvent[] = jsonData;
+        // console.log(arrayData);
+        // console.log("데이터 타입:", typeof arrayData);
 
-        const jcalData = ICAL.parse(response.data);
-        const comp = new ICAL.Component(jcalData);
-        const vevents = comp.getAllSubcomponents("vevent");
-
-        const calendarEvents = vevents.map((vevent) => {
-          const event = new ICAL.Event(vevent);
+        const calendarEvents = jsonData.map((event) => {
+          if (event.at.length === 1) {
+            event.at.push(event.at[0]);
+          }
           return {
-            title: event.summary,
-            start: event.startDate.toJSDate(),
-            end: event.endDate.toJSDate(),
-            description: event.description,
-            location: event.location,
+            title: event.title,
+            start: new Date(event.at[0]),
+            end: new Date(event.at[1]),
+            description: event.org,
             backgroundColor: generatePastelColor(),
+            category: event.category,
+            location: undefined,
           };
         });
-
+        console.log(calendarEvents);
         setEvents(calendarEvents);
       } catch (error) {
-        console.error("Error fetching or parsing iCal file:", error);
+        console.error("Error fetching or parsing json file:", error);
         setError("일정을 불러오는데 실패했습니다.");
         setEvents(sampleEvents);
       } finally {
@@ -108,7 +143,7 @@ export default function ICalendarComponent() {
       }
     };
 
-    fetchICalFile();
+    fetchJsonFile();
   }, []);
 
   const handleEventClick = (event: Event) => {
@@ -116,19 +151,22 @@ export default function ICalendarComponent() {
   };
 
   return (
-    <div style={{ height: "800px", width: "1000px" }}>
+    <div style={{ width: "95vw" }}>
+      <br />
+      <br />
       {error && (
         <div style={{ color: "red", marginBottom: "10px" }}>{error}</div>
       )}
       {loading && (
         <div style={{ color: "red", marginBottom: "10px" }}>로딩 중</div>
       )}
+
       <Calendar
         localizer={localizer}
-        events={events}
+        events={filteredEvents}
         startAccessor="start"
         endAccessor="end"
-        style={{ height: "100%" }}
+        style={{ height: "800px" }}
         onSelectEvent={handleEventClick}
         views={["month", "week", "day", "agenda"]}
         defaultView="month"
@@ -136,6 +174,7 @@ export default function ICalendarComponent() {
         selectable
         messages={lang.ko}
         culture="ko"
+        // showAllEvents={true}
         eventPropGetter={(event: Event) => ({
           style: {
             backgroundColor: event.backgroundColor,
@@ -149,6 +188,26 @@ export default function ICalendarComponent() {
           },
         })}
       />
+      <div>
+        {categoryList.map((category) => (
+          <label key={category.id} className="flex items-center">
+            <input
+              type="checkbox"
+              checked={selectedCategories.includes(category.name)}
+              onChange={() => handleCategoryClick(category.name)}
+              className="mr-2"
+            />
+            {category.name}
+            <span className="text-gray-500 dark:text-gray-400 text-[10px]">
+              ({category.keywords?.join(", ")})
+            </span>
+          </label>
+        ))}
+      </div>
+      <br />
+      <br />
+      <br />
+      <br />
     </div>
   );
 }

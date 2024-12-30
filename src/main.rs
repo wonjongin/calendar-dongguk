@@ -8,7 +8,7 @@ use actix_web::middleware::Logger;
 use actix_web::{http, web};
 use actix_web::{App, HttpServer};
 use crawler::process_univs;
-use router::calendar::{get_calendar, get_calendar_by_short};
+use router::calendar::{get_calendar_by_short, get_classified_json};
 use router::get_univ_config;
 use std::env;
 
@@ -43,7 +43,7 @@ async fn main() -> std::io::Result<()> {
 
         App::new()
             // .service(index)
-            .service(get_calendar)
+            .service(get_classified_json)
             .service(get_calendar_by_short)
             .service(get_univ_config)
             .service(

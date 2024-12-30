@@ -6,6 +6,18 @@ use actix_web::{HttpResponse, Responder};
 use crate::crawler::json_file_to_ics;
 use crate::crawler::univ_config::UnivConfig;
 
+#[get("/j/{univ}/{year}")]
+pub async fn get_classified_json(path: web::Path<(String, i32)>) -> impl Responder {
+    let (univ, year) = path.into_inner();
+    let file_path = format!("data/{}_{}_classified.json", univ, year);
+    match std::fs::read_to_string(&file_path) {
+        Ok(content) => HttpResponse::Ok()
+            .content_type("application/json; charset=utf-8")
+            .body(content),
+        Err(_) => HttpResponse::NotFound().body("Calendar json file not found"),
+    }
+}
+
 #[get("/c/{univ}_{year}_{hash}.ics")]
 pub async fn get_calendar_by_short(path: web::Path<(String, i32, u32)>) -> impl Responder {
     let (univ, year, hash) = path.into_inner();

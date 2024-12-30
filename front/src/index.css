@@ -17,6 +17,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.rbc-row-content {
+  min-height: 150px !important;
+}
+
 a {
   font-weight: 500;
   color: #646cff;

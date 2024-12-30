@@ -21,7 +21,7 @@ interface Category {
   keywords?: string[];
 }
 
-const categories: Category[] = [
+export const categoryList: Category[] = [
   {
     id: 1,
     name: "수업",
@@ -169,7 +169,7 @@ export default function Subscribe() {
           카테고리 선택(중복가능)
         </label>
         <div className="space-y-2 text-sm sm:text-base">
-          {categories.map((category) => (
+          {categoryList.map((category) => (
             <label key={category.id} className="flex items-center">
               <input
                 type="checkbox"
