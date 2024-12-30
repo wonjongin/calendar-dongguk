@@ -5,6 +5,7 @@ pub mod univ_config;
 use anyhow::Result;
 use async_trait::async_trait;
 use chrono::NaiveDate;
+use classify::classify;
 use dongguk::DonggukCrawler;
 use ics::parameters::Value;
 use ics::properties::{Description, DtEnd, DtStart, LastModified, Status, Summary, TzName};
@@ -46,6 +47,14 @@ pub async fn process_univs() -> Result<()> {
                     Ok(schedules) => {
                         create_ics(&schedules, &filename, &univ.name, year_config.year);
                         save_to_json(&schedules, &filename_json)?;
+                        match classify(
+                            &filename_json,
+                            format!("data/{}_{}_classified.json", univ.prefix, year_config.year)
+                                .as_str(),
+                        ) {
+                            Ok(_) => println!("Successfully classified schedules"),
+                            Err(e) => eprintln!("Error classifying schedules: {}", e),
+                        }
                         // std::fs::write(filename, calendar)?;
                         println!(
                             "Successfully created calendar for {} {}",
@@ -96,7 +105,7 @@ pub fn json_file_to_ics(
     ics_file: &str,
     univ: &str,
     year: i32,
-    hash: u8,
+    hash: u32,
 ) -> String {
     let json_str = match std::fs::read_to_string(json_file) {
         Ok(content) => content,

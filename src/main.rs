@@ -7,7 +7,6 @@ use actix_files as fs;
 use actix_web::middleware::Logger;
 use actix_web::{http, web};
 use actix_web::{App, HttpServer};
-use crawler::classify::classify;
 use crawler::process_univs;
 use router::calendar::{get_calendar, get_calendar_by_short};
 use router::get_univ_config;
@@ -20,14 +19,6 @@ async fn main() -> std::io::Result<()> {
 
     if let Err(e) = process_univs().await {
         eprintln!("Error processing schools: {}", e);
-    }
-
-    match classify(
-        "data/DONGGUK_2024.json",
-        "data/DONGGUK_2024_classified.json",
-    ) {
-        Ok(_) => println!("Successfully classified schedules"),
-        Err(e) => eprintln!("Error classifying schedules: {}", e),
     }
 
     #[cfg(debug_assertions)]

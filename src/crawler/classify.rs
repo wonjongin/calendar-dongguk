@@ -1,4 +1,3 @@
-use std::collections::HashMap;
 use std::fs::File;
 use std::io::{Read, Write};
 use std::str;
@@ -6,7 +5,7 @@ use std::str;
 use crate::schedule::Schedule;
 
 fn categorize_schedules(schedules: &mut Vec<Schedule>) {
-    let keywords = HashMap::from([
+    let keywords = vec![
         ("대학원".to_string(), vec!["대학원", "석사", "박사"]),
         (
             "수업".to_string(),
@@ -21,6 +20,7 @@ fn categorize_schedules(schedules: &mut Vec<Schedule>) {
                 "보강",
                 "기준일",
                 "성적처리",
+                "등록",
             ],
         ),
         (
@@ -31,13 +31,13 @@ fn categorize_schedules(schedules: &mut Vec<Schedule>) {
                 "전과",
                 "다전공",
                 "재입학",
-                "졸업연기",
                 "전공신청",
-                "졸업대상자",
-                "조기졸업",
-                "등록",
                 "학점포기",
             ],
+        ),
+        (
+            "졸업".to_string(),
+            vec!["졸업연기", "졸업대상자", "조기졸업"],
         ),
         ("장학".to_string(), vec!["장학"]),
         (
@@ -48,7 +48,7 @@ fn categorize_schedules(schedules: &mut Vec<Schedule>) {
             "행사".to_string(),
             vec!["입학식", "학위수여식", "방학", "기념", "부처님"],
         ),
-    ]);
+    ];
 
     for schedule in schedules.iter_mut() {
         let title = &schedule.title;

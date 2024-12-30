@@ -24,6 +24,10 @@ impl UnivConfig {
         UNIV_CONFIGS.get(univ_code)
     }
 
+    pub fn get_by_prefix(prefix: &str) -> Option<&'static UnivConfig> {
+        UNIV_CONFIGS.values().find(|config| config.prefix == prefix)
+    }
+
     pub fn get_name_by_code(univ_code: &str) -> Option<&'static str> {
         UNIV_CONFIGS
             .get(univ_code)

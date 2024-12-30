@@ -29,13 +29,14 @@ impl ScheduleCategoryList {
                 "교직".to_string(),
                 "행사".to_string(),
                 "기타".to_string(),
+                "졸업".to_string(),
             ],
         }
     }
 
-    pub fn to_hash(&self) -> u8 {
+    pub fn to_hash(&self) -> u32 {
         let all_categories = Self::all();
-        let mut hash: u8 = 0;
+        let mut hash: u32 = 0;
 
         for category in &self.categories {
             if let Some(index) = all_categories.categories.iter().position(|c| c == category) {
@@ -45,7 +46,7 @@ impl ScheduleCategoryList {
         hash
     }
 
-    pub fn from_hash(hash: u8) -> ScheduleCategoryList {
+    pub fn from_hash(hash: u32) -> ScheduleCategoryList {
         let all_categories = Self::all();
         let mut selected_categories = Vec::new();
 

@@ -23,13 +23,13 @@ pub async fn get_calendar(path: web::Path<String>) -> impl Responder {
     }
 }
 
-#[get("/c/{univ_code}_{year_code}_{hash}/cal.ics")]
-pub async fn get_calendar_by_short(path: web::Path<(String, String, u8)>) -> impl Responder {
-    let (univ_code, year_code, hash) = path.into_inner();
-    let file_path = format!("public/{}_{}_{}.ics", univ_code, year_code, hash);
+#[get("/c/{univ}_{year}_{hash}.ics")]
+pub async fn get_calendar_by_short(path: web::Path<(String, i32, u32)>) -> impl Responder {
+    let (univ, year, hash) = path.into_inner();
+    let file_path = format!("public/{}_{}_{}.ics", univ, year, hash);
 
-    if let Some(univ_config) = UnivConfig::get_by_code(&univ_code) {
-        let year_config = univ_config.years.iter().find(|y| y.year_code == year_code);
+    if let Some(univ_config) = UnivConfig::get_by_prefix(&univ) {
+        let year_config = univ_config.years.iter().find(|y| y.year == year);
         if year_config.is_none() {
             return HttpResponse::NotFound().body("Year not found");
         }
@@ -41,7 +41,7 @@ pub async fn get_calendar_by_short(path: web::Path<(String, String, u8)>) -> imp
         } else {
             json_file_to_ics(
                 format!("data/{}_{}_classified.json", prefix, year).as_str(),
-                format!("public/{}_{}_{}.ics", univ_code, year_code, hash).as_str(),
+                format!("public/{}_{}_{}.ics", univ, year, hash).as_str(),
                 &univ_config.name,
                 year,
                 hash,
@@ -53,7 +53,7 @@ pub async fn get_calendar_by_short(path: web::Path<(String, String, u8)>) -> imp
                 .content_type("text/calendar")
                 .append_header((
                     "Content-Disposition",
-                    format!("attachment; filename=\"{}.ics\"", "cal"),
+                    format!("attachment; filename=\"{}_{}_{}.ics\"", univ, year, hash),
                 ))
                 .body(content),
             Err(_) => HttpResponse::NotFound().body("Calendar file not found"),
