@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import toast, { Toaster } from "react-hot-toast";
 
 interface Univ {
   name: string;
@@ -116,6 +117,13 @@ export default function Subscribe() {
 
   return (
     <div className="max-w-[95vw] sm:max-w-md mx-auto mt-0 sm:mt-10 p-4 sm:p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
+      <div>
+        <Toaster
+          toastOptions={{
+            className: "dark:!bg-gray-800 dark:!text-white",
+          }}
+        />
+      </div>
       <h1 className="text-lg sm:text-2xl font-bold mb-4 sm:mb-6 text-center">
         학사일정 캘린더 구독 링크 생성
       </h1>
@@ -193,7 +201,10 @@ export default function Subscribe() {
             </a>
             <button
               className="mt-2 sm:mt-2 w-1/2 bg-blue-500 dark:bg-blue-600 text-white p-2 rounded dark:hover:bg-blue-700 hover:bg-blue-600 text-sm sm:text-base"
-              onClick={() => navigator.clipboard.writeText(generateUrl())}
+              onClick={() => {
+                navigator.clipboard.writeText(generateUrl());
+                toast.success("URL이 복사되었습니다!");
+              }}
             >
               URL 복사하기
             </button>
