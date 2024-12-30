@@ -115,7 +115,7 @@ export default function Subscribe() {
   };
 
   return (
-    <div className="w-full sm:max-w-md mx-auto mt-0 sm:mt-10 p-4 sm:p-6 bg-white rounded-lg shadow-lg">
+    <div className="max-w-[95vw] sm:max-w-md mx-auto mt-0 sm:mt-10 p-4 sm:p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
       <h1 className="text-lg sm:text-2xl font-bold mb-4 sm:mb-6 text-center">
         학사일정 캘린더 구독 링크 생성
       </h1>
@@ -170,7 +170,7 @@ export default function Subscribe() {
                 className="mr-2"
               />
               {category.name}
-              <span className="text-gray-500 text-[10px]">
+              <span className="text-gray-500 dark:text-gray-400 text-[10px]">
                 ({category.keywords?.join(", ")})
               </span>
             </label>
@@ -181,18 +181,18 @@ export default function Subscribe() {
       {selectedUniv && selectedYear && selectedCategories.length > 0 && (
         <div className="mt-4 sm:mt-6">
           <h2 className="font-bold mb-2 text-sm sm:text-base">구독 URL</h2>
-          <div className="p-2 sm:p-3 bg-gray-100 rounded break-all text-xs sm:text-sm">
+          <div className="p-2 sm:p-3 bg-gray-100 dark:bg-gray-500 rounded overflow-x-auto whitespace-nowrap text-xs sm:text-sm">
             {generateUrl()}
           </div>
           <div className="flex flex-row">
             <a
-              className="mt-2 mr-2 sm:mt-2 w-1/2 bg-blue-500 text-white p-2 rounded hover:bg-blue-600 hover:text-white block text-center text-sm sm:text-base"
+              className="mt-2 mr-2 sm:mt-2 w-1/2 bg-blue-500 dark:bg-blue-600 text-white p-2 rounded dark:hover:bg-blue-700 hover:bg-blue-600 hover:text-white block text-center text-sm sm:text-base"
               href={generateUrl().replace(/^https?:/, "webcal:")}
             >
               캘린더에 바로추가
             </a>
             <button
-              className="mt-2 sm:mt-2 w-1/2 bg-blue-500 text-white p-2 rounded hover:bg-blue-600 text-sm sm:text-base"
+              className="mt-2 sm:mt-2 w-1/2 bg-blue-500 dark:bg-blue-600 text-white p-2 rounded dark:hover:bg-blue-700 hover:bg-blue-600 text-sm sm:text-base"
               onClick={() => navigator.clipboard.writeText(generateUrl())}
             >
               URL 복사하기
