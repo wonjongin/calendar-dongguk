@@ -96,7 +96,7 @@ export default function Subscribe() {
   const generateUrl = () => {
     const baseUrl = import.meta.env.DEV
       ? "http://localhost:3000"
-      : "https://dgu-calendar.duckdns.org";
+      : "https://univcal.duckdns.org";
     const encoded = `${selectedUniv}_${selectedYear}_${generateCategoryHash()}`;
     return `${baseUrl}/c/${encoded}.ics`;
   };
@@ -180,22 +180,24 @@ export default function Subscribe() {
 
       {selectedUniv && selectedYear && selectedCategories.length > 0 && (
         <div className="mt-4 sm:mt-6">
-          <h2 className="font-bold mb-2 text-sm sm:text-base">구독 URL:</h2>
-          <div className="p-2 sm:p-3 bg-gray-100 rounded break-all text-xs sm:text-base">
+          <h2 className="font-bold mb-2 text-sm sm:text-base">구독 URL</h2>
+          <div className="p-2 sm:p-3 bg-gray-100 rounded break-all text-xs sm:text-sm">
             {generateUrl()}
           </div>
-          <button
-            className="mt-3 sm:mt-4 w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 text-sm sm:text-base"
-            onClick={() => navigator.clipboard.writeText(generateUrl())}
-          >
-            URL 복사하기
-          </button>
-          <a
-            className="mt-2 sm:mt-4 w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 hover:text-white block text-center text-sm sm:text-base"
-            href={generateUrl()}
-          >
-            캘린더에 추가하기
-          </a>
+          <div className="flex flex-row">
+            <a
+              className="mt-2 mr-2 sm:mt-2 w-1/2 bg-blue-500 text-white p-2 rounded hover:bg-blue-600 hover:text-white block text-center text-sm sm:text-base"
+              href={generateUrl().replace(/^https?:/, "webcal:")}
+            >
+              캘린더에 바로추가
+            </a>
+            <button
+              className="mt-2 sm:mt-2 w-1/2 bg-blue-500 text-white p-2 rounded hover:bg-blue-600 text-sm sm:text-base"
+              onClick={() => navigator.clipboard.writeText(generateUrl())}
+            >
+              URL 복사하기
+            </button>
+          </div>
         </div>
       )}
     </div>

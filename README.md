@@ -20,7 +20,7 @@
 - **웹 캘린더 뷰** 📅
 
   - 월별/주별/일별 보기 지원
-  - 일정 카테고리별 필터링 (학부/대학원/기타)
+  - 일정 카테고리별 필터링 (학부/대학원/기타) (예정)
   - 직관적인 UI로 일정 확인 용이
 
 - **캘린더 구독 서비스** 📱
@@ -33,24 +33,21 @@
 
 ### 웹 캘린더 사용하기
 
-1. [웹사이트](https://dgu-calendar.duckdns.org) 접속
+1. [웹사이트](https://univcal.duckdns.org) 접속
 2. 원하는 보기 방식 선택 (월/주/일)
 3. 필요한 카테고리 필터 적용 (예정)
 
 ### 캘린더 구독하기
 
-1. 구독 URL 복사하기 (아래 [학교별 캘린더 구독 링크](#학교별-캘린더-구독-링크-)에서 확인)
-2. 사용 중인 캘린더 앱에서 구독 추가
+1. [URL 생성](https://univcal.duckdns.org/subscribe)에 접속해 학교, 카테고리 선택하고 구독 URL 생성하기[^2]
+   - **아이폰**의 경우 바로추가 버튼을 누르면 자동으로 구독 추가화면으로 넘어갑니다.
+1. 구독 URL 복사하기
+1. 사용 중인 캘린더 앱에서 구독 추가
    - [Google Calendar 구독 방법](https://support.google.com/calendar/answer/37100?hl=ko)
    - [Apple Calendar 구독 방법](https://support.apple.com/ko-kr/102301)
-   - **아이폰**의 경우 해당 URL을 누르면 자동으로 구독 추가화면으로 넘어갑니다.
 
-## 학교별 캘린더 구독 링크 📅
 
-| 학교명 | 학년도 | 캘린더 구독 링크 |
-| --- | --- | --- |
-| 동국대학교 | 2024 | [https://dgu-calendar.duckdns.org/calendar/DONGGUK_2024.ics](https://dgu-calendar.duckdns.org/calendar/DONGGUK_2024.ics) |
-| 동국대학교 | 2025 | [https://dgu-calendar.duckdns.org/calendar/DONGGUK_2025.ics](https://dgu-calendar.duckdns.org/calendar/DONGGUK_2025.ics) |
+[^2]: URL 생성시 바로추가 버튼을 누르면 몇몇 캘린더 앱에서 바로 추가할 수 있습니다.
 
 ## 지원하는 학교 🏫
 
