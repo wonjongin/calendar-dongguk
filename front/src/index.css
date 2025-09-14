@@ -33,7 +33,9 @@ a:hover {
 body {
   margin: 0;
   display: flex;
-  place-items: center;
+  /* place-items: center; */
+  justify-content: center; /* 추가 */
+  align-items: center; /* place-items 대신 */
   min-width: 320px;
   min-height: 100vh;
 }

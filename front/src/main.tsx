@@ -4,11 +4,13 @@ import App from "./App.tsx";
 import { BrowserRouter, Route } from "react-router";
 import { Routes } from "react-router";
 import Subscribe from "./Subscribe.tsx";
+import CalendarComponent from "./Calendar.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <BrowserRouter>
     <Routes>
-      <Route path="/calendar" element={<App />} />
+      <Route path="/" element={<App />} />
+      <Route path="/calendar" element={<CalendarComponent />} />
       <Route path="/subscribe" element={<Subscribe />} />
     </Routes>
   </BrowserRouter>,

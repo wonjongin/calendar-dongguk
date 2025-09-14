@@ -130,6 +130,7 @@ export default function Subscribe() {
     <div className="max-w-[95vw] sm:max-w-md mx-auto mt-0 sm:mt-10 p-4 sm:p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
       <div>
         <Toaster
+          position="bottom-center"
           toastOptions={{
             className: "dark:!bg-gray-800 dark:!text-white",
           }}
