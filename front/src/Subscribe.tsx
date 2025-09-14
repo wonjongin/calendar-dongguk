@@ -209,13 +209,13 @@ export default function Subscribe() {
               className="bg-blue-500 dark:bg-blue-600 text-white p-2 rounded dark:hover:bg-blue-700 hover:bg-blue-600 hover:text-white block text-center text-sm sm:text-base"
               href={generateUrl().replace(/^https?:/, "webcal:")}
             >
-              캘린더에 바로추가
+              캘린더에 바로추가(아이폰/맥)
             </a>
             <button
               className="bg-green-500 dark:bg-green-600 text-white p-2 rounded dark:hover:bg-green-700 hover:bg-green-600 text-sm sm:text-base"
               onClick={handleDownload}
             >
-              ICS 파일 다운로드
+              ICS 파일 다운로드(갤럭시)
             </button>
             <button
               className="bg-gray-500 dark:bg-gray-600 text-white p-2 rounded dark:hover:bg-gray-700 hover:bg-gray-600 text-sm sm:text-base"
@@ -224,7 +224,7 @@ export default function Subscribe() {
                 toast.success("URL이 복사되었습니다!");
               }}
             >
-              URL 복사하기
+              URL 복사하기(수동추가)
             </button>
           </div>
         </div>
