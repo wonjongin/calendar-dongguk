@@ -102,6 +102,17 @@ export default function Subscribe() {
     return `${baseUrl}/c/${encoded}.ics`;
   };
 
+  const handleDownload = () => {
+    const url = generateUrl();
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${selectedUniv}_${selectedYear}_calendar.ics`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    toast.success("ICS 파일 다운로드가 시작되었습니다!");
+  };
+
   const handleCategoryChange = (categoryId: number) => {
     setSelectedCategories((prev) =>
       prev.includes(categoryId)
@@ -192,15 +203,21 @@ export default function Subscribe() {
           <div className="p-2 sm:p-3 bg-gray-100 dark:bg-gray-500 rounded overflow-x-auto whitespace-nowrap text-xs sm:text-sm">
             {generateUrl()}
           </div>
-          <div className="flex flex-row">
+          <div className="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2">
             <a
-              className="mt-2 mr-2 sm:mt-2 w-1/2 bg-blue-500 dark:bg-blue-600 text-white p-2 rounded dark:hover:bg-blue-700 hover:bg-blue-600 hover:text-white block text-center text-sm sm:text-base"
+              className="bg-blue-500 dark:bg-blue-600 text-white p-2 rounded dark:hover:bg-blue-700 hover:bg-blue-600 hover:text-white block text-center text-sm sm:text-base"
               href={generateUrl().replace(/^https?:/, "webcal:")}
             >
               캘린더에 바로추가
             </a>
             <button
-              className="mt-2 sm:mt-2 w-1/2 bg-blue-500 dark:bg-blue-600 text-white p-2 rounded dark:hover:bg-blue-700 hover:bg-blue-600 text-sm sm:text-base"
+              className="bg-green-500 dark:bg-green-600 text-white p-2 rounded dark:hover:bg-green-700 hover:bg-green-600 text-sm sm:text-base"
+              onClick={handleDownload}
+            >
+              ICS 파일 다운로드
+            </button>
+            <button
+              className="bg-gray-500 dark:bg-gray-600 text-white p-2 rounded dark:hover:bg-gray-700 hover:bg-gray-600 text-sm sm:text-base"
               onClick={() => {
                 navigator.clipboard.writeText(generateUrl());
                 toast.success("URL이 복사되었습니다!");
