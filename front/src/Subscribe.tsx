@@ -80,7 +80,7 @@ export default function Subscribe() {
     let url = "";
     if (import.meta.env.DEV) {
       console.log("개발 환경입니다");
-      url = "http://localhost:8080/univ.json";
+      url = "http://localhost:3000/univ.json";
     } else if (import.meta.env.PROD) {
       url = "/univ.json";
     }
@@ -96,7 +96,7 @@ export default function Subscribe() {
 
   const generateUrl = () => {
     const baseUrl = import.meta.env.DEV
-      ? "http://localhost:8080"
+      ? "http://localhost:3000"
       : "https://univcal.duckdns.org";
     const encoded = `${selectedUniv}_${selectedYear}_${generateCategoryHash()}`;
     return `${baseUrl}/c/${encoded}.ics`;
