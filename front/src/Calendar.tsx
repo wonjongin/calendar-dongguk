@@ -106,9 +106,9 @@ export default function CalendarComponent() {
         let url = "";
         if (import.meta.env.DEV) {
           console.log("개발 환경입니다");
-          url = "http://localhost:3000/j/DONGGUK/2024";
+          url = "http://localhost:3000/j/DONGGUK/2025";
         } else if (import.meta.env.PROD) {
-          url = "/j/DONGGUK/2024";
+          url = "/j/DONGGUK/2025";
         }
 
         const response = await axios.get(url);
