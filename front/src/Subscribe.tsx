@@ -178,7 +178,7 @@ export default function Subscribe() {
 
       <div className="mb-6">
         <label className="block mb-2 text-sm sm:text-base">
-          카테고리 선택(중복가능)
+          카테고리 선택(중복가능)<br/>(일반적으로는 수업만 선택하셔도 충분합니다.)
         </label>
         <div className="space-y-2 text-sm sm:text-base">
           {categoryList.map((category) => (
