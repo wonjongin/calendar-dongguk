@@ -4,7 +4,7 @@ pub mod univ_config;
 
 use anyhow::Result;
 use async_trait::async_trait;
-use chrono::NaiveDate;
+use chrono::{Days, NaiveDate};
 use classify::classify;
 use dongguk::DonggukCrawler;
 use ics::parameters::Value;
@@ -149,7 +149,10 @@ pub fn create_ics(schedules: &[Schedule], filename: &str, univ: &str, year: i32)
             .unwrap_or_else(|_| NaiveDate::from_ymd_opt(2024, 1, 1).unwrap());
 
         let end_date = if schedule.at.len() > 1 {
-            NaiveDate::parse_from_str(&schedule.at[1], "%Y-%m-%d").unwrap_or(start_date)
+            NaiveDate::parse_from_str(&schedule.at[1], "%Y-%m-%d")
+                .unwrap_or(start_date)
+                .checked_add_days(Days::new(1))
+                .unwrap_or(start_date)
         } else {
             start_date
         };
