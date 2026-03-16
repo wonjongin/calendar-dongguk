@@ -5,6 +5,11 @@
     "univ_code": "d",
     "years": [
       {
+        "year": 2026,
+        "year_code": "d",
+        "url": "https://www.dongguk.edu/schedule/detail?schedule_info_seq=22&schedule_start_date=2026"
+      },
+      {
         "year": 2025,
         "year_code": "c",
         "url": "https://www.dongguk.edu/schedule/detail?schedule_info_seq=22&schedule_start_date=2025"
